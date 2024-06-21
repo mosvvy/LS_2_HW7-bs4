@@ -23,7 +23,7 @@ class SQLiteConnector:
 
 
 def create_table_parce_data_phones():
-    con = SQLiteConnector('db.db')
+    con = SQLiteConnector()
 
     con.cursor.execute("""
     CREATE TABLE IF NOT EXISTS phones(

@@ -4,7 +4,8 @@ from unittest import mock
 
 import requests
 
-from parcer import EkParcer, save_to_db
+from db_connector import SQLiteConnector
+from parcer import EkParcer
 
 
 def mock_response_func():
@@ -24,4 +25,25 @@ def test_tmp():
 
     # print(p._SOUP)
     cards = p.get_cards()
+    # EkParcer.show_cards(cards)
+
+    print(list(cards[0].values()))
+
+
+def test_db_tmp():
+    mock_response = SimpleNamespace()
+    mock_response.text = mock_response_func()
+
+    with mock.patch('requests.get', return_value=mock_response):
+        # response = requests.get('https://ek.ua/ua/ek-list.php?katalog_=122&brand_=apple&sb_=%D0%BC%D0%BE%D0%B1%D1%96%D0%BB%D1%8C%D0%BD%D1%96+%D1%82%D0%B5%D0%BB%D0%B5%D1%84%D0%BE%D0%BD%D0%B8+Apple')
+        # print(response.text)
+        p = EkParcer()
+
+    # print(p._SOUP)
+    cards = p.get_cards()
     EkParcer.show_cards(cards)
+
+    # con = SQLiteConnector('/db.db')
+    EkParcer.save_to_db('../db.db', cards)
+
+    # print(list(cards[0].values()))

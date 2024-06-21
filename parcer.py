@@ -3,6 +3,8 @@ import copy
 import requests
 from bs4 import BeautifulSoup
 
+from db_connector import SQLiteConnector
+
 
 class EkParcer:
     _BASE_URL = 'https://ek.ua'
@@ -55,7 +57,6 @@ class EkParcer:
             #     cards.append(card)
         return cards
 
-
     @staticmethod
     def show_cards(cards):
         print()
@@ -69,7 +70,7 @@ class EkParcer:
             #     print(f"{k:>30} {v}")
 
     @staticmethod
-    def get_attr_name(attr:str):
+    def get_attr_name():
         # todo remove this construction...
         attrs = {
             "Назва": "title",
@@ -83,12 +84,24 @@ class EkParcer:
             "Акумулятор": "battery",
             "Корпус": "corpus",
         }
-        return attrs.get(attr)
+        return list(attrs.values())
 
+    @staticmethod
+    def save_to_db(db: str, cards):
+        # db.insert(cards)
+        con = SQLiteConnector(db)
+        # print(con)
+        # try:
+        for card in cards:
+            print(f"""
+                    INSERT INTO phones
+                    VALUES('{"', '".join(list(card.values()))}')
+                    """)
+            con.cursor.execute(
+                f"""INSERT INTO phones ('{"', '".join(EkParcer.get_attr_name())}') VALUES('{"', '".join(list(card.values()))}')""")
+            con.commit()
 
-def save_to_db(db, cards):
-    db.insert(cards)
+        # except:
+        #     print(f'ERROR')
 
-
-
-
+        del con
