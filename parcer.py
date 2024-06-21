@@ -19,30 +19,45 @@ class EkParcer:
         html = response.text
         self._SOUP = BeautifulSoup(html, 'html.parser')
 
+    def __get_card(self, table):
+        card = {
+            'Разва': table.find('span', class_='u').text,
+            'Ціна': table.find('div', class_='model-price-range').find('a').text.strip(),
+            # 'details': table.find('div', class_='m-s-f2').find_all('div'),
+
+            # "Екран":None,
+            # "Камера":None,
+            # "Відео":None,
+            # "Пам'ять":None,
+            # "Процесор":None,
+            # "ОЗП":None,
+            # "Акумулятор":None,
+            # "Корпус":None,
+        }
+
+        det = {}
+        # card['det'] = det
+        for i in table.find('div', class_='m-s-f2').find_all('div', recursive=False):
+            tmp = " ".join(i.text.split())
+            k, v = tmp[:tmp.find(':')], tmp[tmp.find(':') + 1:]
+            det[k] = v
+            card[k] = v
+
+        return card
+
     def get_cards(self):
         cards = []
         for item in self._SOUP.find_all('table', class_='model-short-block'):
-            card = {
-                'title': item.find('span', class_='u').text,
-                'price_range': item.find('div', class_='model-price-range').find('a').text.strip(),
-                'details': item.find('div', class_='m-s-f2').find_all('div'),
-                # **{ item[:item.find(':')]: item[item.find(':')+2:] for item in item.find('div', class_='m-s-f2').find_all('div', requrcive=False) }
-            }
-
-            det = {}
-            card['det'] = det
-            for item in item.find('div', class_='m-s-f2').find_all('div', recursive=False):
-            #     if item.__
-            #         print(item['title'])
-            #     print(item[:item.find(':')],  item[item.find(':') + 2:])
-                tmp = " ".join(item.text.split())
-                # print(tmp[:tmp.find(':')], tmp[tmp.find(':')+1:])
-                k, v = tmp[:tmp.find(':')], tmp[tmp.find(':')+1:]
-                det[k] = v
-
+            card = self.__get_card(item)
             cards.append(card)
+            # for variation in item.find('div', class_='m-c-f1-pl--button').find_all('a'):
+            #     card = self.__get_card(item)
+            #     cards.append(card)
 
         for card in cards:
-            print(f"{card.get('title'):30} {card.get('price_range'):30} {card.get('de-tails')}")
-            print(f"{card.get('det')}")
+            print()
+            # print(f"{card.get('title'):>30} {card.get('price_range'):30} {card.get('de-tails')}")
+            # for k,v in card.get('det').items():
+            for k, v in card.items():
+                print(f"{k:>30} {v}")
         # return cards
