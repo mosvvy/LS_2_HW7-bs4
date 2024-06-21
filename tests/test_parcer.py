@@ -4,7 +4,7 @@ from unittest import mock
 
 import requests
 
-from parcer import EkParcer
+from parcer import EkParcer, show_cards
 
 
 def mock_response_func():
@@ -23,4 +23,5 @@ def test_tmp():
         p = EkParcer()
 
     # print(p._SOUP)
-    p.get_cards()
+    cards = p.get_cards()
+    show_cards(cards)

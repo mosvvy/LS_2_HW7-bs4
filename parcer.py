@@ -21,7 +21,7 @@ class EkParcer:
 
     def __get_card(self, table):
         card = {
-            'Разва': table.find('span', class_='u').text,
+            'Назва': table.find('span', class_='u').text,
             'Ціна': table.find('div', class_='model-price-range').find('a').text.strip(),
             # 'details': table.find('div', class_='m-s-f2').find_all('div'),
 
@@ -39,7 +39,7 @@ class EkParcer:
         # card['det'] = det
         for i in table.find('div', class_='m-s-f2').find_all('div', recursive=False):
             tmp = " ".join(i.text.split())
-            k, v = tmp[:tmp.find(':')], tmp[tmp.find(':') + 1:]
+            k, v = tmp[:tmp.find(':')], tmp[tmp.find(':') + 1:].strip()
             det[k] = v
             card[k] = v
 
@@ -53,11 +53,16 @@ class EkParcer:
             # for variation in item.find('div', class_='m-c-f1-pl--button').find_all('a'):
             #     card = self.__get_card(item)
             #     cards.append(card)
+        return cards
 
-        for card in cards:
-            print()
-            # print(f"{card.get('title'):>30} {card.get('price_range'):30} {card.get('de-tails')}")
-            # for k,v in card.get('det').items():
-            for k, v in card.items():
-                print(f"{k:>30} {v}")
-        # return cards
+
+def show_cards(cards):
+    print()
+    for card in cards:
+        print(f"{card.get("Назва"):30}{card.get("Ціна"):25}{card.get("Екран"):60}{card.get("Камера"):50}{card.get("Відео"):60}{card.get("Пам'ять"):10}{card.get("Процесор"):20}{card.get("ОЗП"):10}{card.get("Акумулятор"):20}{card.get("Корпус"):20}")
+        # print()
+        # print(f"{card.get('title'):>30} {card.get('price_range'):30} {card.get('de-tails')}")
+        # for k,v in card.get('det').items():
+        # for k, v in card.items():
+        #     print(f"{k:>30} {v}")
+
