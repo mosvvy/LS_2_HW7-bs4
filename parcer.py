@@ -56,13 +56,39 @@ class EkParcer:
         return cards
 
 
-def show_cards(cards):
-    print()
-    for card in cards:
-        print(f"{card.get("Назва"):30}{card.get("Ціна"):25}{card.get("Екран"):60}{card.get("Камера"):50}{card.get("Відео"):60}{card.get("Пам'ять"):10}{card.get("Процесор"):20}{card.get("ОЗП"):10}{card.get("Акумулятор"):20}{card.get("Корпус"):20}")
-        # print()
-        # print(f"{card.get('title'):>30} {card.get('price_range'):30} {card.get('de-tails')}")
-        # for k,v in card.get('det').items():
-        # for k, v in card.items():
-        #     print(f"{k:>30} {v}")
+    @staticmethod
+    def show_cards(cards):
+        print()
+        for card in cards:
+            print(
+                f"{card.get("Назва"):30}{card.get("Ціна"):25}{card.get("Екран"):60}{card.get("Камера"):50}{card.get("Відео"):60}{card.get("Пам'ять"):10}{card.get("Процесор"):20}{card.get("ОЗП"):10}{card.get("Акумулятор"):20}{card.get("Корпус"):20}")
+            # print()
+            # print(f"{card.get('title'):>30} {card.get('price_range'):30} {card.get('de-tails')}")
+            # for k,v in card.get('det').items():
+            # for k, v in card.items():
+            #     print(f"{k:>30} {v}")
+
+    @staticmethod
+    def get_attr_name(attr:str):
+        # todo remove this construction...
+        attrs = {
+            "Назва": "title",
+            "Ціна": "price_range",
+            "Екран": "screen",
+            "Камера": "camera",
+            "Відео": "video",
+            "Пам'ять": "space",
+            "Процесор": "processor",
+            "ОЗП": "ram",
+            "Акумулятор": "battery",
+            "Корпус": "corpus",
+        }
+        return attrs.get(attr)
+
+
+def save_to_db(db, cards):
+    db.insert(cards)
+
+
+
 
