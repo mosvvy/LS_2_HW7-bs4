@@ -63,11 +63,6 @@ class EkParcer:
         for card in cards:
             print(
                 f"{card.get("Назва"):30}{card.get("Ціна"):25}{card.get("Екран"):60}{card.get("Камера"):50}{card.get("Відео"):60}{card.get("Пам'ять"):10}{card.get("Процесор"):20}{card.get("ОЗП"):10}{card.get("Акумулятор"):20}{card.get("Корпус"):20}")
-            # print()
-            # print(f"{card.get('title'):>30} {card.get('price_range'):30} {card.get('de-tails')}")
-            # for k,v in card.get('det').items():
-            # for k, v in card.items():
-            #     print(f"{k:>30} {v}")
 
     @staticmethod
     def get_attr_name():
@@ -88,27 +83,14 @@ class EkParcer:
 
     @staticmethod
     def save_to_db(db: str, cards):
-        # db.insert(cards)
         con = SQLiteConnector(db)
-        # print(con)
-        # try:
+
         for card in cards:
             con.cursor.execute(
                 f"""SELECT id FROM phones WHERE title='{card.get("Назва")}' AND space='{card.get("Пам'ять")}' AND ram='{card.get("ОЗП")}'""")
             id = con.cursor.fetchall()
-            print('====================id:', id)
             if id:
                 id = id[0][0]
-                print('================================id:', id)
-                # print(f"""UPDATE phones
-                #     SET price_range = '{card.get('Ціна')}',
-                #         screen = '{card.get('Екран')}',
-                #         camera = '{card.get('Камера')}',
-                #         video = '{card.get('Відео')}',
-                #         processor = '{card.get('Процесор')}',
-                #         battery = '{card.get('Акумулятор')}',
-                #         corpus = '{card.get('Корпус')}'
-                #     WHERE id={id}""")
                 con.cursor.execute(f"""UPDATE phones 
                     SET price_range = '{card.get('Ціна')}',
                         screen = '{card.get('Екран')}',
@@ -122,8 +104,5 @@ class EkParcer:
                 con.cursor.execute(
                     f"""INSERT INTO phones ('{"', '".join(EkParcer.get_attr_name())}') VALUES('{"', '".join(list(card.values()))}')""")
             con.commit()
-
-        # except:
-        #     print(f'ERROR')
 
         del con

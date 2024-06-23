@@ -54,7 +54,7 @@ if __name__ == '__main__':
     # for i in r:
     #     print(i)
 
-    # con.exec("DELETE FROM phones")
+    # con.exec("DELETE FROM phones WHERE id IN (190,187)")
     # con.commit()
 
     # con.exec("DROP TABLE phones")
