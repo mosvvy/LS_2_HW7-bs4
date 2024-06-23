@@ -24,7 +24,7 @@ class EkParcer:
     def __get_card(self, table):
         card = {
             'Назва': table.find('span', class_='u').text,
-            'Ціна': table.find('div', class_='model-price-range').find('a').text.strip(),
+            'Ціна': 'від ' + table.find('div', class_='model-price-range').find('a').text.strip(),
             # 'details': table.find('div', class_='m-s-f2').find_all('div'),
 
             # "Екран":None,
@@ -93,12 +93,34 @@ class EkParcer:
         # print(con)
         # try:
         for card in cards:
-            print(f"""
-                    INSERT INTO phones
-                    VALUES('{"', '".join(list(card.values()))}')
-                    """)
             con.cursor.execute(
-                f"""INSERT INTO phones ('{"', '".join(EkParcer.get_attr_name())}') VALUES('{"', '".join(list(card.values()))}')""")
+                f"""SELECT id FROM phones WHERE title='{card.get("Назва")}' AND space='{card.get("Пам'ять")}' AND ram='{card.get("ОЗП")}'""")
+            id = con.cursor.fetchall()
+            print('====================id:', id)
+            if id:
+                id = id[0][0]
+                print('================================id:', id)
+                # print(f"""UPDATE phones
+                #     SET price_range = '{card.get('Ціна')}',
+                #         screen = '{card.get('Екран')}',
+                #         camera = '{card.get('Камера')}',
+                #         video = '{card.get('Відео')}',
+                #         processor = '{card.get('Процесор')}',
+                #         battery = '{card.get('Акумулятор')}',
+                #         corpus = '{card.get('Корпус')}'
+                #     WHERE id={id}""")
+                con.cursor.execute(f"""UPDATE phones 
+                    SET price_range = '{card.get('Ціна')}',
+                        screen = '{card.get('Екран')}',
+                        camera = '{card.get('Камера')}',
+                        video = '{card.get('Відео')}',
+                        processor = '{card.get('Процесор')}',
+                        battery = '{card.get('Акумулятор')}',
+                        corpus = '{card.get('Корпус')}'
+                    WHERE id={id}""")
+            else:
+                con.cursor.execute(
+                    f"""INSERT INTO phones ('{"', '".join(EkParcer.get_attr_name())}') VALUES('{"', '".join(list(card.values()))}')""")
             con.commit()
 
         # except:

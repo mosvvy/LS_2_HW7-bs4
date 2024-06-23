@@ -47,14 +47,17 @@ def create_table_parce_data_phones():
 if __name__ == '__main__':
     # create_table_parce_data_phones()
 
-    con = SQLiteConnector()
+    con = SQLiteConnector('db.db')
 
-    con.exec("SELECT * FROM phones")
-    r = con.cursor.fetchall()
-    for i in r:
-        print(i)
+    # con.exec("SELECT * FROM phones")
+    # r = con.cursor.fetchall()
+    # for i in r:
+    #     print(i)
 
-    # con.exec("DROP TABLE users")
+    # con.exec("DELETE FROM phones")
+    # con.commit()
+
+    # con.exec("DROP TABLE phones")
 
     del con
 
